@@ -11,15 +11,15 @@ class User(Base):
 
     id  = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True)
-    password = Column(String(50))
-    name = Column(String(50))
+    passwords = Column(String(50))
+    nome = Column(String(50))
     email = Column(String(50), unique=True)
 
 
     def __init__(self, username, password, name, email):
         self.username = username
-        self.password = password
-        self.name = name
+        self.passwords = password
+        self.nome = name
         self.email = email
 
     def __repr__(self):

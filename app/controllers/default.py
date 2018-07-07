@@ -6,8 +6,8 @@ from app.models.forms import LoginForm
 
 from app.models.tables import User
 
-
 from app import db,session
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -24,9 +24,18 @@ def login():
                                     form=form
                                     )
 
-@app.route("/teste/<info>")
-@app.route("/teste", defaults={"info": None})
-def teste(info):
-    i = User ("Gui", "123", "glva", "gui@gmail.com" )
-    session.add(i)
-    session.commit()
+@app.route("/teste")
+def teste():
+   # i = User ("Gui", "123", "glva", "gui@gmail.com" )
+
+    try:
+        session.add(User("sss", 123, "ss", "sss"))
+        session.commit()
+        session.close()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+    return "OK";

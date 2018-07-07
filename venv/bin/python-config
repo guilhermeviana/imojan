@@ -1,4 +1,4 @@
-#!/home/guilherme/projetofinal/venv/bin/python
+#!/home/guilherme/gitHub/imojan/venv/bin/python
 
 import sys
 import getopt
