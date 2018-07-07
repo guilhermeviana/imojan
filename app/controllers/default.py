@@ -7,7 +7,7 @@ from app.models.forms import LoginForm
 from app.models.tables import User
 
 
-from app import db 
+from app import db,session
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -28,5 +28,5 @@ def login():
 @app.route("/teste", defaults={"info": None})
 def teste(info):
     i = User ("Gui", "123", "glva", "gui@gmail.com" )
-    db.session.add(i)
-    db.session.commit()
+    session.add(i)
+    session.commit()
