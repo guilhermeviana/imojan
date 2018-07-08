@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>Ola mundo</title>
+    <title>ImoJan</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename="css/bootstrap.min.css")}}" />
@@ -24,21 +24,21 @@
   <body>
 
     <div class="container">
-      <div class="header clearfix">
+      <div class="header clearfix" style="margin-top: 10px">
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
+            <li role="presentation"><a href="#">Sobre</a></li>
+            <li role="presentation"><a href="#">Contato</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Project name</h3>
+        <h3 class="text-muted"></h3>
       </div>
 
       {% block content %}
       {% endblock %}
-      <footer class="footer">
-        <p>&copy; 2016 Company, Inc.</p>
+      <footer class="footer" align="center">
+        <p>&copy; 2018 Guilherme Luis Viana Alves</p>
       </footer>
     </div> 
   </body>

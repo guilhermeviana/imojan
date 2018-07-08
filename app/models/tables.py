@@ -1,10 +1,11 @@
-from app import db
+from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, Float, Text
-from sqlalchemy import ForeignKey
+from sqlalchemy import (Column, DateTime, Float, ForeignKey, Integer, String,
+                        Text)
 from sqlalchemy.orm import relationship
 
-from app import Base
+from app import Base, db
+
 
 class User(Base):
     __tablename__ = "users"
@@ -16,38 +17,71 @@ class User(Base):
     email = Column(String(50), unique=True)
 
 
-    def __init__(self, username, password, name, email):
+    def __init__(self, username=None, password=None, name=None, email=None):
         self.username = username
         self.passwords = password
         self.nome = name
         self.email = email
 
+
     def __repr__(self):
         return "<User %r>" % self.username
 
-class Post(Base):
-    __tablename__ = "posts"
 
-    id = Column(Integer, primary_key=True)
-    content = Column(Text)
-    user_id = Column(Integer, ForeignKey('users.id'))
+##Criar endereço de um imóvel
+#class Address(object):
+  ##  zipCode = Column(String(8))
+   ## street = Column (String(200))
+  ##  neighborhood = Column(String(200))
+  ##  number = Column(Integer)
+   ## complement = Column (String(100))
+
+  ##  def __init__(self,zipCode,street, neighborhood, number,complement):
+       ## self.zipCode = zipCode
+      ##  self.street = street
+      ##  self.neighborhood = neighborhood
+      ##  self.number = number
+      ##  self.complement = complement
+
+##Criar "anuncio", contendo suas informações
+##Obs: o atributo address precisa ser preenchido atraves do método addAddress
+class Homes(Base):
+    __tablename__ = "homes"
+
+    id = Column(Integer, primary_key=True)    
+    client_id = Column(Integer, ForeignKey('users.id'))
+    title = Column(String(200))
+    value = Column(Float)
+    description = Column(Text)
+    telephone = Column (String()) 
+    publicationDate = Column(DateTime,default=datetime.now)
+    zipCode = Column(String(8))
+    street = Column (String(200))
+    neighborhood = Column(String(200))
+    number = Column(Integer)
+    complement = Column (String(100))
 
 
-    user = relationship ('User', foreign_keys=user_id)
 
-    def __init__(self, content,user_id):
-        self.content = content
-        self.user_id = user_id
+  ##  def addAdrress(self, zipCode,street,neighborhood,number,complement):
+      ##  self.address.zipCode = zipCode
+      ##  self.address.street = street
+     ##   self.address.neighborhood = neighborhood
+     ##   self.address.number = number
+      ##  self.address.complement = complement
+
+    def __init__(self, client_id,title,value,description,telephone,publicationDate,zipCode,street, neighborhood, number,complement):
+        self.client_id = client_id
+        self.title = title
+        self.value = value
+        self.description = description
+        self.telephone = telephone
+        self.publicationDate = publicationDate
+        self.zipCode = zipCode
+        self.street = street
+        self.neighborhood = neighborhood
+        self.number = number
+        self.complement = complement
 
     def __repr__(self):
-        return "<Post %r>" % self.id
-
-class Follow(Base):
-    __tablename__ = "follow"
-
-    id  = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    follow_id = Column(Integer, ForeignKey('users.id'))
-
-    user = relationship ('User', foreign_keys=user_id)
-    follower = relationship ('User', foreign_keys=follow_id)
+        return '<Home: title{0}>'.format(self.title)
