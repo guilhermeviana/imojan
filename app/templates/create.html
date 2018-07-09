@@ -1,0 +1,101 @@
+{% extends 'base.html'  %}
+{% block content %}
+<h1 align="center">Falta pouco...</h1><br>
+<div class="row">
+<div class="col-md-6 col-md-offset-3">
+<form>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Titulo</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Ex: Apartamento no centro">
+        </div>
+        <div class="row">
+        <div class="form-group col-md-4">
+          <label for="exampleFormControlSelect1">Valor</label>
+          <input type="text" class="form-control " id="exampleFormControlSelect1" placeholder="Ex: 230,00">
+        </div>
+       
+       
+      </div>
+      <div class="form-group">
+          <label for="exampleFormControlTextarea1">Descrição</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Max: 500 caracteres"></textarea>
+        </div>  
+
+        <hr>
+        <h4>Endereço</h4> <br>
+     
+            <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="exampleFormControlSelect2">CEP</label>
+                  <input type="text" class="form-control " id="exampleFormControlSelect2" placeholder="Ex: 39480000">
+                </div>
+                
+                <div class="form-group col-md-2">
+                    <label for="exampleFormControlSelect2">Buscar</label>
+                    <a href="http://api.postmon.com.br/v1/cep/04880090"><button type="button" class="form-control btn btn-info" value="Salvar">
+                       <span class="glyphicon glyphicon-zoom-in"></span>
+                      </button>        </a>  
+
+                </div>
+               
+               
+              </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="exampleFormControlSelect3">Rua</label>
+                  <input type="text" class="form-control " id="exampleFormControlSelect3" placeholder="">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="exampleFormControlSelect4">Número</label>
+                    <input type="text" class="form-control " id="exampleFormControlSelect4" placeholder="">
+                  </div>
+
+                  <div class="form-group col-md-4">
+                      <label for="exampleFormControlSelect3">Complemento</label>
+                      <input type="text" class="form-control " id="exampleFormControlSelect3" placeholder="">
+                    </div>
+               
+               
+              </div>
+
+              <div class="row">
+
+                  <div class="form-group col-md-6">
+                      <label for="exampleFormControlSelect5">Bairro</label>
+                      <input type="text" class="form-control " id="exampleFormControlSelect5" placeholder="">
+                    </div>        
+               
+                
+             
+                
+                 
+                </div>
+
+                <hr>
+                <h4>Contato</h4> <br>
+
+
+                <div class="row">
+
+                    <div class="form-group col-md-6">
+                        <label for="exampleFormControlSelect5">Celular</label>
+                        <input type="text" class="form-control " id="exampleFormControlSelect5" placeholder="">
+                      </div>        
+                 
+                  
+               
+                  
+                   
+                  </div>
+<br>
+<div class="row" >
+  <div class="col-md-6 col-md-offset-3" >
+       
+       <button  type="submit" class="form-control btn btn-success center" >SALVAR</button>
+      </div>
+    </div>
+      </form>
+    </div>
+</div>
+      {% endblock %}
