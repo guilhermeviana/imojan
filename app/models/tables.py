@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from app import Base, db
 
 
-class User(Base):
+class User(db.Model):
     __tablename__ = "users"
 
     id  = Column(Integer, primary_key=True)
@@ -17,9 +17,9 @@ class User(Base):
     email = Column(String(50), unique=True)
 
 
-    def __init__(self, username=None, password=None, name=None, email=None):
+    def __init__(self, username=None, passwords=None, name=None, email=None):
         self.username = username
-        self.passwords = password
+        self.passwords = passwords
         self.nome = name
         self.email = email
 
@@ -45,7 +45,7 @@ class User(Base):
 
 ##Criar "anuncio", contendo suas informações
 ##Obs: o atributo address precisa ser preenchido atraves do método addAddress
-class Homes(Base):
+class Homes(db.Model):
     __tablename__ = "homes"
 
     id = Column(Integer, primary_key=True)    
@@ -53,7 +53,7 @@ class Homes(Base):
     title = Column(String(200))
     value = Column(Float)
     description = Column(Text)
-    telephone = Column (String()) 
+    telephone = Column (String(15)) 
     publicationDate = Column(DateTime,default=datetime.now)
     zipCode = Column(String(8))
     street = Column (String(200))
@@ -85,3 +85,5 @@ class Homes(Base):
 
     def __repr__(self):
         return '<Home: title{0}>'.format(self.title)
+
+        

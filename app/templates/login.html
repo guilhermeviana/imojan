@@ -1,34 +1,40 @@
-{% extends 'base.html'  %}
+{% extends 'base.html' %} {% block content %}
+<div class="col-md-4 col-md-offset-4">
+  <h2 align="center">BEM VINDO!</h2>
 
-{% block content %}
-        <div class="col-md-4 col-md-offset-4">
-            <h2 align="center">BEM VINDO!</h2>
-        <form action="" method="POST">
-            {{ form.csrf_token  }}
-            <div class="form-group">
-              <label for="exampleInputEmail1">E-mail</label>
-                {{ form.username(class="form-control")}}
-                {% if form.errors.username %}
-                <div class="alert alert-danger" role="alert">{{ form.errors.username }}</div>
-                {% endif %}
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Senha</label>
-              {{ form.password(class="form-control")}}     
-              {% if form.errors.username %}
-              <div class="alert alert-danger" role="alert">{{ form.errors.password }}</div>
-              {% endif %}       
-            </div>
-            <div class="form-group">           
-            <div class="checkbox">
-              <label>
-                {{ form.remember_me(_class="form-control")}}  Lembrar-me
-              </label>
-            </div>
-            <button type="submit" class="btn btn-default">Login</button>
-          </form>
-        </div>
+  {% with messages = get_flashed_messages() %} {% if messages %}
+  <div class="alert alert-danger">
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+  {% endif %} {% endwith %} {% block body %}{% endblock %}
+  <form action="" method="POST">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      <label for="exampleInputEmail1">E-mail</label>
+      {{ form.username(class="form-control")}} {% if form.errors.username %}
+      <div class="alert alert-danger" role="alert">{{ form.errors.username }}</div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Senha</label>
+      {{ form.passwords(class="form-control")}} {% if form.errors.username %}
+      <div class="alert alert-danger" role="alert">{{ form.errors.password }}</div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <div class="checkbox">
+        <label>
+          {{ form.remember_me(_class="form-control")}} Lembrar-me
+        </label>
+      </div>
+      <button type="submit" class="btn btn-default">Login</button>
+  </form>
+  </div>
 
 
-   
-{% endblock %}
+
+  {% endblock %}
