@@ -20,6 +20,6 @@ class ControlHomes(object):
 # Ver com mais calma
     def listHomes(self):
         try:
-            return Homes.query.all()
+            return session.query.all()
         except:
             return "OPS"

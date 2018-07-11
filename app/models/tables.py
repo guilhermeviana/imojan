@@ -16,6 +16,31 @@ class User(db.Model):
     nome = Column(String(50))
     email = Column(String(50), unique=True)
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+
+    @property
+    def is_anonymous(self):
+        return False
+
+
+    
+    def get_id(self):
+        return str(self.id)
+
+    def get_username(self):
+        return str(self.username)
+
+
+
+
+
 
     def __init__(self, username=None, passwords=None, name=None, email=None):
         self.username = username
