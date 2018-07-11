@@ -31,10 +31,10 @@ class User(db.Model):
 
     
     def get_id(self):
-        return str(self.id)
+        return (self.id)
 
     def get_username(self):
-        return str(self.username)
+        return (self.username)
 
 
     def __init__(self, username=None, passwords=None):
@@ -42,8 +42,7 @@ class User(db.Model):
         self.passwords = passwords
 
 
-    def __repr__(self):
-        return "<User %r>" % self.username
+    
 
 
 ##Criar endereço de um imóvel

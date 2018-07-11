@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+
+{% with messages = get_flashed_messages() %} {% if messages %}
+<div class="alert alert-warning">
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %} {% endwith %} {% block body %}{% endblock %}
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Anúncio</th>
+      <th scope="col">Valor</th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody> 
+
+   
+     
+      {%  for my in user  %}
+    <tr>
+        
+      <th scope="row">--></th>
+      <td>{{ my.title }}</td>
+      <td>{{ my.value }}</td>
+      
+      <td><button class="btn btn-danger btn-sm">APAGAR</button></td>
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

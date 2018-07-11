@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from datetime import datetime
 from app.models.forms import LoginForm, Home
 from app.models.tables import User, Homes
@@ -7,9 +7,11 @@ from app.controllers.functions import ControlHomes
 from app import db, session, Session
 from app.templates.cep import ListCep
 import pycep_correios
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required,current_user
 from app import lm
 from flask_login import LoginManager
+
+
 
 
 
@@ -51,14 +53,16 @@ def login():
 
 
 @app.route("/republica/cadastro", methods=["GET", "POST"])
+@login_required
 def create():
     forme = Home()
     if forme.validate_on_submit():
         try:           
             i = ControlHomes()
-            i.addHome( 1, forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
+            i.addHome( int (current_user.get_id()), forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
                       datetime.now(), forme.zipCode.data, forme.street.data, forme.neighborhood.data, forme.number.data, forme.complement.data)
             flash("Anúncio cadastrado!")
+            return redirect('/republica/meusanuncios')
         except:
             return render_template('create.html', forme=forme)
         finally:
@@ -66,6 +70,17 @@ def create():
     else:
         return render_template('create.html', forme=forme)
     return render_template('create.html', forme=forme)
+
+@app.route("/republica/localizar", methods=["GET", "POST"])
+def list():
+    return "OK"
+
+
+@app.route("/republica/meusanuncios", methods=["GET", "POST"])
+def meusanuncios():
+    user = session.query(Homes).filter_by(
+            client_id=current_user.get_id()).all()
+    return render_template('meusanuncios.html',user=user)
 
 
 @app.route("/get", methods=["POST", "GET"])
@@ -76,6 +91,6 @@ def liste():
 
 
 @app.route("/cep", methods=["POST", "GET"])
-def list():
+def listy():
     n = ListCep()
     return str(n.loadCep('04880090'))
