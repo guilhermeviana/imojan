@@ -13,8 +13,7 @@ class User(db.Model):
     id  = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True)
     passwords = Column(String(50))
-    nome = Column(String(50))
-    email = Column(String(50), unique=True)
+
 
     @property
     def is_authenticated(self):
@@ -38,15 +37,9 @@ class User(db.Model):
         return str(self.username)
 
 
-
-
-
-
-    def __init__(self, username=None, passwords=None, name=None, email=None):
+    def __init__(self, username=None, passwords=None):
         self.username = username
         self.passwords = passwords
-        self.nome = name
-        self.email = email
 
 
     def __repr__(self):
@@ -75,7 +68,7 @@ class Homes(db.Model):
 
     id = Column(Integer, primary_key=True)    
     client_id = Column(Integer, ForeignKey('users.id'))
-    title = Column(String(200))
+    title = Column(String(200), unique=True)
     value = Column(Float)
     description = Column(Text)
     telephone = Column (String(15)) 

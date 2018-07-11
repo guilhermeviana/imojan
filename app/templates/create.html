@@ -1,8 +1,19 @@
 {% extends 'base.html' %} {% block content %}
 <h1 align="center">Falta pouco...</h1>
 <br>
+
 <div class="row">
+
   <div class="col-md-6 col-md-offset-3">
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="alert alert-warning">
+      <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %} {% endwith %} {% block body %}{% endblock %}
     <form action="" method="POST">
       {{ forme.csrf_token }}
       <div class="form-group">
@@ -23,18 +34,7 @@
       <hr>
       <h4>Endereço</h4>
       <br>
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label for="exampleFormControlSelect2">CEP</label>
-          {{ forme.zipCode(class="form-control",id="exampleFormControlSelect2", placeholder="Ex: 39480000")}}
-        </div>
-        <div class="form-group col-md-2">
-          <label for="exampleFormControlSelect2">Buscar</label>
-          <button type="button" id="cepp" class="form-control btn btn-info" value="Salvar">
-            <span class="glyphicon glyphicon-zoom-in"></span>
-          </button>
-        </div>
-      </div>
+
       <div class="row">
         <div class="form-group col-md-6">
           <label for="exampleFormControlSelect3">Rua</label>
@@ -53,6 +53,10 @@
         <div class="form-group col-md-6">
           <label for="exampleFormControlSelect6">Bairro</label>
           {{ forme.neighborhood(class="form-control",id="exampleFormControlSelect6")}}
+        </div>
+        <div class="form-group col-md-4">
+          <label for="exampleFormControlSelect2">CEP</label>
+          {{ forme.zipCode(class="form-control",id="exampleFormControlSelect2", placeholder="Ex: 39480000")}}
         </div>
       </div>
       <hr>

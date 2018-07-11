@@ -12,6 +12,7 @@ from app import lm
 from flask_login import LoginManager
 
 
+
 @lm.user_loader
 def load_user(id):
     return session.query(User).filter_by(id=id).first()
@@ -53,10 +54,11 @@ def login():
 def create():
     forme = Home()
     if forme.validate_on_submit():
-        try:
+        try:           
             i = ControlHomes()
-            i.addHome(1, forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
+            i.addHome( 1, forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
                       datetime.now(), forme.zipCode.data, forme.street.data, forme.neighborhood.data, forme.number.data, forme.complement.data)
+            flash("Anúncio cadastrado!")
         except:
             return render_template('create.html', forme=forme)
         finally:
