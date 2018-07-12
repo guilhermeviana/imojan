@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 from app import Base, db
 
 
+
 class User(db.Model):
     __tablename__ = "users"
 

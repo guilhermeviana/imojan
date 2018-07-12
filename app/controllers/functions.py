@@ -23,3 +23,11 @@ class ControlHomes(object):
             return session.query.all()
         except:
             return "OPS"
+
+    def remHome(self, Homes):
+        session.delete(Homes)
+        session.commit()
+        session.close()
+        
+
+
