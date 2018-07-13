@@ -5,7 +5,6 @@ from app.models.forms import LoginForm, Home
 from app.models.tables import User, Homes
 from app.controllers.functions import ControlHomes
 from app import db, session, Session
-from app.templates.cep import ListCep
 import pycep_correios
 from flask_login import login_user, logout_user, login_required, current_user
 from app import lm
@@ -120,33 +119,17 @@ def liste():
         print(p.email)
 
 
-@app.route("/cep", methods=["POST", "GET"])
-def listy():
-    n = ListCep()
-    return str(n.loadCep('04880090'))
-
-
-
-
 
 @app.route("/republica/localizar")
 def mapa():
-    #response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=42.1282269,-87.7108162&key=AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y"
-             #               )
-   # x = json.loads(response.content)
     alls = session.query(Homes).order_by().all()
-    #return str (alls[2].lat)
     maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
     markerso= []
 
     for i in alls:
-       # h = maps.geocode("Rua "+str(i.lat)+" "+str(i.lng))
-        #lat = str(h[0]['geometry']['location']['lat'])
-        #lgn = str(h[0]['geometry']['location']['lng'])
         markerso.append({'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': i.lat, 'lng': i.lng, 'infobox': str(i.title+" "+str(i.value)) })
         lat = i.lat
         lng = i.lng
-
 
     mymap = Map(
         maptype="ROADMAP",
@@ -159,8 +142,6 @@ def mapa():
         fit_markers_to_bounds = True,
         region='Brazil',
         language='pt-br'
-        
-    
     )
 
 
@@ -171,12 +152,6 @@ def mapa():
         lng=-51.92528,
         markers= markerso,
         fit_markers_to_bounds = True,
-       
     )
-
-
-    
-   # https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY
-
     return render_template('mapa.html', mymap=mymap, sndmap=sndmap,markerso=markerso)
     

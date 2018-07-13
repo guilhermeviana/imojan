@@ -10,12 +10,12 @@ class LoginForm(Form):
 
 
 class Home(Form):
-    title = StringField("title")#, validators=[DataRequired()])
-    value = StringField("value")#, validators=[DataRequired()])
+    title = StringField("title", validators=[DataRequired()])
+    value = StringField("value", validators=[DataRequired()])
     description = TextAreaField("description")
-    zipCode = StringField("zipCode")#, validators=[DataRequired()])
-    street = StringField("zipCode")#, validators=[DataRequired()])
-    number = IntegerField("number")#, validators=[DataRequired()])
-    neighborhood = StringField("neighborhood")#, validators=[DataRequired()])
+    zipCode = StringField("zipCode", validators=[DataRequired()])
+    street = StringField("zipCode", validators=[DataRequired()])
+    number = IntegerField("number", validators=[DataRequired()])
+    neighborhood = StringField("neighborhood", validators=[DataRequired()])
     complement = StringField("complement")
     telephone = StringField("telephone")

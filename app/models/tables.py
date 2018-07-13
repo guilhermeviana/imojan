@@ -1,9 +1,7 @@
 from datetime import datetime
-
 from sqlalchemy import (Column, DateTime, Float, ForeignKey, Integer, String,
                         Text)
 from sqlalchemy.orm import relationship
-
 from app import Base, db
 
 
@@ -15,7 +13,6 @@ class User(db.Model):
     username = Column(String(50), unique=True)
     passwords = Column(String(50))
 
-
     @property
     def is_authenticated(self):
         return True
@@ -24,27 +21,19 @@ class User(db.Model):
     def is_active(self):
         return True
 
-
     @property
     def is_anonymous(self):
         return False
 
-
-    
     def get_id(self):
         return (self.id)
 
     def get_username(self):
         return (self.username)
 
-
     def __init__(self, username=None, passwords=None):
         self.username = username
         self.passwords = passwords
-
-
-    
-
 
 ##Criar endereço de um imóvel
 #class Address(object):
@@ -80,7 +69,6 @@ class Homes(db.Model):
     complement = Column (String(100))
     lat = Column (String(50))
     lng = Column(String(50))
-
 
 
   ##  def addAdrress(self, zipCode,street,neighborhood,number,complement):
