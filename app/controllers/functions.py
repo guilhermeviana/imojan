@@ -8,10 +8,10 @@ class ControlHomes(object):
     def __init__(self):
         self.__status = True
 
-    def addHome(self, client_id, title, value, description, telephone, publicationDate, zipCode, street, neighborhood, number, complementf):
+    def addHome(self, client_id, title, value, description, telephone, publicationDate, zipCode, street, neighborhood, number, complementf,lat,lng):
         try:
             h = Homes(client_id, title, value, description, telephone,
-                      publicationDate, zipCode, street, neighborhood, number, complementf)
+                      publicationDate, zipCode, street, neighborhood, number, complementf,lat,lng)
             session.add(h)
             session.commit()
         except:

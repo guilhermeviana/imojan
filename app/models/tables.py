@@ -78,6 +78,8 @@ class Homes(db.Model):
     neighborhood = Column(String(200))
     number = Column(Integer)
     complement = Column (String(100))
+    lat = Column (String(50))
+    lng = Column(String(50))
 
 
 
@@ -88,7 +90,7 @@ class Homes(db.Model):
      ##   self.address.number = number
       ##  self.address.complement = complement
 
-    def __init__(self, client_id,title,value,description,telephone,publicationDate,zipCode,street, neighborhood, number,complement):
+    def __init__(self, client_id,title,value,description,telephone,publicationDate,zipCode,street, neighborhood, number,complement,lat,lng):
         self.client_id = client_id
         self.title = title
         self.value = value
@@ -100,6 +102,8 @@ class Homes(db.Model):
         self.neighborhood = neighborhood
         self.number = number
         self.complement = complement
+        self.lat = lat
+        self.lng = lng
 
     def __repr__(self):
         return '<Home: title{0}>'.format(self.title)

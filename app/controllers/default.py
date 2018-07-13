@@ -10,12 +10,17 @@ import pycep_correios
 from flask_login import login_user, logout_user, login_required, current_user
 from app import lm
 from flask_login import LoginManager
-from flask_googlemaps import GoogleMaps, Map
+from flask_googlemaps import GoogleMaps, Map, googlemap
 import requests
+
+
+
+import googlemaps
 
 from flask import json
 
 from json import JSONDecoder, JSONDecodeError, JSONEncoder
+
 
 
 @lm.user_loader
@@ -27,111 +32,6 @@ def load_user(id):
 def index():
     return render_template('home.html')
 
-
-@app.route("/mapa")
-def mapa():
-    # creating a map in the view
-
-    response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=januária&key=AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y"
-                            )
-    x = json.loads(response.text)
-
-    #return str(x['results[0].geometry[0].location.lat[0]'])
-    a = {
-        "results": [
-            {
-                "address_components": [
-                    {
-                        "long_name": "1600",
-                        "short_name": "1600",
-                        "types": ["street_number"]
-                    },
-                    {
-                        "long_name": "Amphitheatre Parkway",
-                        "short_name": "Amphitheatre Pkwy",
-                        "types": ["route"]
-                    },
-                    {
-                        "long_name": "Mountain View",
-                        "short_name": "Mountain View",
-                        "types": ["locality", "political"]
-                    },
-                    {
-                        "long_name": "Santa Clara County",
-                        "short_name": "Santa Clara County",
-                        "types": ["administrative_area_level_2", "political"]
-                    },
-                    {
-                        "long_name": "California",
-                        "short_name": "CA",
-                        "types": ["administrative_area_level_1", "political"]
-                    },
-                    {
-                        "long_name": "Estados Unidos",
-                        "short_name": "US",
-                        "types": ["country", "political"]
-                    },
-                    {
-                        "long_name": "94043",
-                        "short_name": "94043",
-                        "types": ["postal_code"]
-                    }
-                ],
-                "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043, EUA",
-                "geometry": {
-                    "location": {
-                        "lat": 37.4215421,
-                        "lng": -122.0840106
-                    },
-                    "location_type": "ROOFTOP",
-                    "viewport": {
-                        "northeast": {
-                            "lat": 37.42289108029149,
-                            "lng": -122.0826616197085
-                        },
-                        "southwest": {
-                            "lat": 37.42019311970849,
-                            "lng": -122.0853595802915
-                        }
-                    }
-                },
-                "place_id": "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
-                "types": ["street_address"]
-            }
-        ],
-        "status": "OK"
-    }
-
-
-
-    return str(a['location[0].lat[0]'])
-
-    mymap = Map(
-        identifier="view-side",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[(37.4419, -122.1419)]
-    )
-    sndmap = Map(
-        identifier="sndmap",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[
-            {
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                'lat': 37.4419,
-                'lng': -122.1419,
-                'infobox': "<b>Hello World</b>"
-            },
-            {
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                'lat': 37.4300,
-                'lng': -122.1400,
-                'infobox': "<b>Hello World from other place</b>"
-            }
-        ]
-    )
-    return render_template('mapa.html', mymap=mymap, sndmap=sndmap)
 
 
 @app.route('/logout')
@@ -162,17 +62,26 @@ def login():
 
 # blueprint
 
+@app.route("/t",methods=["GET", "POST"])
+def aa():
+    return render_template('teste.html')
 
 @app.route("/republica/cadastro", methods=["GET", "POST"])
-@login_required
+#@login_required
 def create():
+    if current_user.get_id()==None:
+        return redirect('/login')
     forme = Home()
-
     if forme.validate_on_submit():
         try:
+            maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
+            h = maps.geocode("Rua "+forme.street.data+" "+forme.neighborhood.data+" "+str(forme.number.data)+" "+forme.zipCode.data)    
+            lat = str(h[0]['geometry']['location']['lat'])
+            lng = str(h[0]['geometry']['location']['lng'])
+
             i = ControlHomes()
             i.addHome(int(current_user.get_id()), forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
-                      datetime.now(), forme.zipCode.data, forme.street.data, forme.neighborhood.data, forme.number.data, forme.complement.data)
+                      datetime.now(), forme.zipCode.data, forme.street.data, forme.neighborhood.data, forme.number.data, forme.complement.data,lat,lng)
             flash("Anúncio cadastrado!")
             return redirect('/republica/meusanuncios')
         except:
@@ -184,9 +93,6 @@ def create():
     return render_template('create.html', forme=forme)
 
 
-@app.route("/republica/localizar", methods=["GET", "POST"])
-def list():
-    return "OK"
 
 
 @app.route("/republica/remove/<int:id>", methods=["GET", "POST"])
@@ -200,6 +106,8 @@ def rm(id):
 
 @app.route("/republica/meusanuncios", methods=["GET", "POST"])
 def meusanuncios():
+    if current_user.get_id()==None:
+        return redirect('/login')
     user = session.query(Homes).filter_by(
         client_id=current_user.get_id()).all()
     return render_template('meusanuncios.html', user=user)
@@ -216,3 +124,59 @@ def liste():
 def listy():
     n = ListCep()
     return str(n.loadCep('04880090'))
+
+
+
+
+
+@app.route("/republica/localizar")
+def mapa():
+    #response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=42.1282269,-87.7108162&key=AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y"
+             #               )
+   # x = json.loads(response.content)
+    alls = session.query(Homes).order_by().all()
+    #return str (alls[2].lat)
+    maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
+    markerso= []
+
+    for i in alls:
+       # h = maps.geocode("Rua "+str(i.lat)+" "+str(i.lng))
+        #lat = str(h[0]['geometry']['location']['lat'])
+        #lgn = str(h[0]['geometry']['location']['lng'])
+        markerso.append({'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': i.lat, 'lng': i.lng, 'infobox': str(i.title+" "+str(i.value)) })
+        lat = i.lat
+        lng = i.lng
+
+
+    mymap = Map(
+        maptype="ROADMAP",
+        style=" #sndmap { height:800px!important;width:100%!important;margin:0; }",
+        identifier="view-side",
+        zoom=1,
+        lat=-14.235004,
+        lng=-51.92528,
+        markers=[(-14.235004, -51.92528)],
+        fit_markers_to_bounds = True,
+        region='Brazil',
+        language='pt-br'
+        
+    
+    )
+
+
+    sndmap = Map(
+        identifier="sndmap",
+        zoom=8,
+        lat=-14.235004,
+        lng=-51.92528,
+        markers= markerso,
+        fit_markers_to_bounds = True,
+       
+    )
+
+
+    
+   # https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY
+
+    return render_template('mapa.html', mymap=mymap, sndmap=sndmap,markerso=markerso)
+    
