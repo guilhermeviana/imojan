@@ -59,14 +59,9 @@ def login():
                                )
     return redirect('/login')
 
-# blueprint
 
-@app.route("/t",methods=["GET", "POST"])
-def aa():
-    return render_template('teste.html')
 
 @app.route("/republica/cadastro", methods=["GET", "POST"])
-#@login_required
 def create():
     if current_user.get_id()==None:
         return redirect('/login')
@@ -93,7 +88,6 @@ def create():
 
 
 
-
 @app.route("/republica/remove/<int:id>", methods=["GET", "POST"])
 def rm(id):
     m = ControlHomes()
@@ -110,14 +104,6 @@ def meusanuncios():
     user = session.query(Homes).filter_by(
         client_id=current_user.get_id()).all()
     return render_template('meusanuncios.html', user=user)
-
-
-@app.route("/get", methods=["POST", "GET"])
-def liste():
-    user = session.query(User).all()
-    for p in user:
-        print(p.email)
-
 
 
 @app.route("/republica/localizar")
@@ -155,3 +141,31 @@ def mapa():
     )
     return render_template('mapa.html', mymap=mymap, sndmap=sndmap,markerso=markerso)
     
+
+
+###API REST GAROTOOOO
+@app.route("/republica/get", methods=["GET"])
+@app.route("/republica/get/<int:id>", methods=["GET"])
+def get(id=None):
+    alls = []
+    if id:
+        homes = session.query(Homes).filter_by(
+        id=id).all()
+    else:
+        homes = session.query(Homes).all()
+       
+    for h in homes:
+        alls.append({'Titulo': h.title, 'Valor': h.value, 'Descricao': h.description , 
+        'Endereco':[{
+            'Rua': h.street,
+            'Numero': h.number,
+            'Complemento': h.complement,
+            'Bairro': h.neighborhood,
+            'CEP': h.zipCode
+        }],
+        'Telefone': h.telephone})
+
+    return jsonify({'republicas': alls})
+
+
+

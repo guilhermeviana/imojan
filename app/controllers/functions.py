@@ -17,13 +17,6 @@ class ControlHomes(object):
         except:
             session.rollback()
 
-# Ver com mais calma
-    def listHomes(self):
-        try:
-            return session.query.all()
-        except:
-            return "OPS"
-
     def remHome(self, Homes):
         session.delete(Homes)
         session.commit()
