@@ -41,6 +41,8 @@ def logout():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+
+
     form = LoginForm()
     if form.validate_on_submit():
         user = session.query(User).filter_by(
@@ -143,17 +145,21 @@ def mapa():
     
 
 
-###API REST GAROTOOOO
+###API REST 
 @app.route("/republica/get", methods=["GET"])
 @app.route("/republica/get/<int:id>", methods=["GET"])
-def get(id=None):
+@app.route("/republica/get/<title>", methods=["GET"])
+def get(id=None,title=None):
     alls = []
-    if id:
+    if not id and not title:
+        homes = session.query(Homes).all()
+    elif id:
         homes = session.query(Homes).filter_by(
         id=id).all()
-    else:
-        homes = session.query(Homes).all()
-       
+    elif title:
+        homes = session.query(Homes).filter_by(
+        title=title).all()
+
     for h in homes:
         alls.append({'Titulo': h.title, 'Valor': h.value, 'Descricao': h.description , 
         'Endereco':[{
@@ -167,5 +173,31 @@ def get(id=None):
 
     return jsonify({'republicas': alls})
 
+####POST
+
+@app.route("/republica/post",methods=["POST"])
+def addPost():
+    rep = {'Titulo': request.json['Titulo'], 'Valor': request.json['Valor'], 'Descricao': request.json['Descricao'] , 
+        'Endereco':[{
+            'Rua': request.json['Endereco'][0]['Rua'],
+            'Numero': request.json['Endereco'][0]['Numero'],
+            'Complemento': request.json['Endereco'][0]['Complemento'],
+            'Bairro': request.json['Endereco'][0]['Bairro'],
+            'CEP': request.json['Endereco'][0]['CEP']
+        }],
+        'Telefone': request.json['Telefone']}
+    maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
+    l = maps.geocode("Rua "+request.json['Endereco'][0]['Rua']+" "+request.json['Endereco'][0]['Bairro']+" "+str(request.json['Endereco'][0]['Numero'])+" "+request.json['Endereco'][0]['CEP'])    
+    l = maps.geocode("RUA G, Jardim Estela, 206 Januária 39480000")
+
+    latt = str(l[0]['geometry']['location']['lat'])
+    lngg = str(l[0]['geometry']['location']['lng'])
+
+    current_user.is_autenticate = True
+    i = ControlHomes()
+    i.addHome(2, request.json['Titulo'], request.json['Valor'], request.json['Descricao'], request.json['Telefone'],
+        datetime.now(), request.json['Endereco'][0]['CEP'], request.json['Endereco'][0]['Rua'], request.json['Endereco'][0]['Complemento'], request.json['Endereco'][0]['Numero'], request.json['Endereco'][0]['Complemento'],latt,lngg)
+
+    return  redirect('/republica/localizar')
 
 
