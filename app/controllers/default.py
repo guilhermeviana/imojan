@@ -198,6 +198,33 @@ def addPost():
     i.addHome(2, request.json['Titulo'], request.json['Valor'], request.json['Descricao'], request.json['Telefone'],
         datetime.now(), request.json['Endereco'][0]['CEP'], request.json['Endereco'][0]['Rua'], request.json['Endereco'][0]['Complemento'], request.json['Endereco'][0]['Numero'], request.json['Endereco'][0]['Complemento'],latt,lngg)
 
-    return  redirect('/republica/localizar')
+    return  jsonify({'result': rep})
 
 
+@app.route("/republica/put/<int:id>",methods=["PUT","POST"])
+def updatePut(id):
+    homes = session.query(Homes).filter_by(
+        id=id).first()
+    homes.title = request.json['Titulo']
+    homes.value = request.json['Valor']
+    homes.description = request.json['Descricao']
+    homes.telephone = request.json['Telefone']
+    homes.zipCode = request.json['Endereco'][0]['CEP']
+    homes.street = request.json['Endereco'][0]['Rua']
+    homes.neighborhood = request.json['Endereco'][0]['Bairro']
+    homes.number = request.json['Endereco'][0]['Numero']
+    homes.complement = request.json['Endereco'][0]['Complemento']
+    session.commit()
+    return redirect('/')
+
+
+@app.route("/republica/del/<int:id>",methods=["DELETE","GET"])
+def delPut(id):
+    homes = session.query(Homes).filter_by(
+        id=id).first()    
+    session.delete(homes)
+    try:
+        session.commit()
+        return jsonify({'status': 'APAGADO'})
+    except:
+        return jsonify ({'status': 'FALHA'})
