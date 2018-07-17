@@ -13,28 +13,34 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Anúncio</th>
-      <th scope="col">Valor</th>
-      <th scope="col">Ações</th>
+      <th style="width: 10%" scope="col">#</th>
+      <th style="width: 20%" scope="col">Anúncio</th>
+      <th style="width: 20%" scope="col">Valor</th>
+      <th style="width: 1%" scope="col">Ações</th>
     </tr>
   </thead>
   <tbody> 
 
-   
+    
      
       {%  for my in user  %}
+
     <tr>
         
-      <th scope="row">--></th>
+      <th scope="row">{{loop.index}}</th>
       <td>{{ my.title }}</td>
       <td>{{ my.value }}</td>
       
-      <td><a href="/republica/remove/{{ my.id }}"><button class="btn btn-danger btn-sm">APAGAR</button></a></td>
+      <td style="width: 1%">
+        <a href="/republica/remove/{{ my.id }}"><button class="btn btn-danger btn-sm">APAGAR</button>
+        </a>
       
+      </td>
+
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
 {% endblock %}
+

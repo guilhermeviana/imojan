@@ -11,13 +11,7 @@ from app import lm
 from flask_login import LoginManager
 from flask_googlemaps import GoogleMaps, Map, googlemap
 import requests
-
-
-
 import googlemaps
-
-from flask import json
-
 from json import JSONDecoder, JSONDecodeError, JSONEncoder
 
 
@@ -31,8 +25,6 @@ def load_user(id):
 def index():
     return render_template('home.html')
 
-
-
 @app.route('/logout')
 def logout():
     logout_user()
@@ -41,8 +33,6 @@ def logout():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-
-
     form = LoginForm()
     if form.validate_on_submit():
         user = session.query(User).filter_by(
@@ -63,11 +53,15 @@ def login():
 
 
 
+
+
+
 @app.route("/republica/cadastro", methods=["GET", "POST"])
 def create():
     if current_user.get_id()==None:
         return redirect('/login')
     forme = Home()
+       
     if forme.validate_on_submit():
         try:
             maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
@@ -115,7 +109,7 @@ def mapa():
     markerso= []
 
     for i in alls:
-        markerso.append({'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': i.lat, 'lng': i.lng, 'infobox': str(i.title+" "+str(i.value)) })
+        markerso.append({'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 'lat': i.lat, 'lng': i.lng, 'infobox': str("<h5>"+i.title+" </h5>"+"<br> <strong>Valor:</strong> "+str(i.value)+" <br><strong> Contato: </strong>"+str(i.telephone) + "<br> <strong>Descrição: </strong> "+ i.description) })
         lat = i.lat
         lng = i.lng
 
@@ -123,7 +117,7 @@ def mapa():
         maptype="ROADMAP",
         style=" #sndmap { height:800px!important;width:100%!important;margin:0; }",
         identifier="view-side",
-        zoom=1,
+        zoom=5,
         lat=-14.235004,
         lng=-51.92528,
         markers=[(-14.235004, -51.92528)],
@@ -135,7 +129,7 @@ def mapa():
 
     sndmap = Map(
         identifier="sndmap",
-        zoom=8,
+        zoom=5,
         lat=-14.235004,
         lng=-51.92528,
         markers= markerso,
@@ -172,6 +166,7 @@ def get(id=None,title=None):
         'Telefone': h.telephone})
 
     return jsonify({'republicas': alls})
+
 
 ####POST
 

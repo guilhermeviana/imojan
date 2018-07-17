@@ -10,6 +10,9 @@ class LoginForm(Form):
 
 
 class Home(Form):
+    id = None
+    lat = None
+    lng = None
     title = StringField("title", validators=[DataRequired()])
     value = StringField("value", validators=[DataRequired()])
     description = TextAreaField("description")
