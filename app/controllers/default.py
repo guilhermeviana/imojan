@@ -68,7 +68,7 @@ def create():
             h = maps.geocode("Rua "+forme.street.data+" "+forme.neighborhood.data+" "+str(forme.number.data)+" "+forme.zipCode.data)    
             lat = str(h[0]['geometry']['location']['lat'])
             lng = str(h[0]['geometry']['location']['lng'])
-
+            
             i = ControlHomes()
             i.addHome(int(current_user.get_id()), forme.title.data, forme.value.data, forme.description.data, forme.telephone.data,
                       datetime.now(), forme.zipCode.data, forme.street.data, forme.neighborhood.data, forme.number.data, forme.complement.data,lat,lng)
@@ -183,7 +183,7 @@ def addPost():
         'Telefone': request.json['Telefone']}
     maps = googlemaps.Client(key='AIzaSyC5t7IJz1xp-3huks0QEOVv5eFOv6Lal4Y')
     l = maps.geocode("Rua "+request.json['Endereco'][0]['Rua']+" "+request.json['Endereco'][0]['Bairro']+" "+str(request.json['Endereco'][0]['Numero'])+" "+request.json['Endereco'][0]['CEP'])    
-    l = maps.geocode("RUA G, Jardim Estela, 206 Januária 39480000")
+    #l = maps.geocode("RUA G, Jardim Estela, 206 Januária 39480000")
 
     latt = str(l[0]['geometry']['location']['lat'])
     lngg = str(l[0]['geometry']['location']['lng'])

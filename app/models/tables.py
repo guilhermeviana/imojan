@@ -62,7 +62,7 @@ class Homes(db.Model):
     description = Column(Text)
     telephone = Column (String(15)) 
     publicationDate = Column(DateTime,default=datetime.now)
-    zipCode = Column(String(8))
+    zipCode = Column(String(10))
     street = Column (String(200))
     neighborhood = Column(String(200))
     number = Column(Integer)
